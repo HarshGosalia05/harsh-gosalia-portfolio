@@ -248,10 +248,10 @@ export function Projects() {
                     </div>
 
                     {/* Body */}
-                    <div className="flex flex-1 flex-col p-6 justify-between">
-                      <div className="flex-1 flex flex-col justify-start">
+                    <div className="flex flex-1 flex-col p-6 min-h-0">
+                      <div className="flex-1 flex flex-col justify-start min-h-0">
                         {(project.category || project.badge) && (
-                          <div className="flex items-center justify-between gap-2 mb-2">
+                          <div className="flex items-center justify-between gap-2 mb-2 shrink-0">
                             {project.category && (
                               <span className="font-mono text-[10px] tracking-wider text-muted-foreground uppercase">
                                 {project.category}
@@ -264,75 +264,75 @@ export function Projects() {
                             )}
                           </div>
                         )}
-                        <h3 className="font-display text-lg font-semibold">{project.title}</h3>
-                        <p className="mt-2 text-sm leading-relaxed text-muted-foreground line-clamp-2">
+                        <h3 className="font-display text-lg font-semibold shrink-0">{project.title}</h3>
+                        <p className="mt-2 text-sm leading-relaxed text-muted-foreground line-clamp-2 shrink-0">
                           {project.description}
                         </p>
-                      </div>
 
-                      <div className="mt-auto">
-                        <div className="mt-4 flex flex-wrap gap-2">
+                        {/* Technology tags: display:flex; flex-wrap:wrap; gap:8px; max-height:72px; overflow:hidden; */}
+                        <div className="mt-4 flex flex-wrap gap-2 max-h-[72px] overflow-hidden">
                           {project.tech.map((t) => (
                             <span
                               key={t}
-                              className="rounded-md border border-border bg-secondary/50 px-2.5 py-1 text-xs text-muted-foreground transition-colors group-hover:text-foreground"
+                              className="rounded-md border border-border bg-secondary/50 px-2.5 py-1 text-xs text-muted-foreground transition-colors group-hover:text-foreground shrink-0"
                             >
                               {t}
                             </span>
                           ))}
                         </div>
+                      </div>
 
-                        <div className="mt-6 flex flex-wrap items-center gap-2 pt-4 border-t border-border">
-                          {project.github ? (
-                            <Button asChild size="sm" variant="outline">
-                              <a href={project.github} target="_blank" rel="noreferrer">
-                                <Github />
-                                Code
-                              </a>
-                            </Button>
-                          ) : (
-                            <div className="relative group/tooltip">
-                              <Button size="sm" variant="outline" disabled>
-                                <Github />
-                                Code
-                              </Button>
-                              <span className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 scale-0 transition-all rounded bg-popover border border-border px-2.5 py-1.5 text-xs text-popover-foreground group-hover/tooltip:scale-100 pointer-events-none whitespace-nowrap z-50 shadow-lg">
-                                Source Code Coming Soon
-                              </span>
-                            </div>
-                          )}
-                          {project.demoVideo ? (
-                            <Button
-                              onClick={() => setActiveVideo(project.demoVideo)}
-                              size="sm"
-                              variant="outline"
-                            >
-                              <ExternalLink />
-                              Live Demo
-                            </Button>
-                          ) : project.demo && project.demo !== "#" ? (
-                            <Button asChild size="sm" variant="outline">
-                              <a href={project.demo} target="_blank" rel="noreferrer">
-                                <ExternalLink />
-                                Live Demo
-                              </a>
-                            </Button>
-                          ) : (
-                            <Button size="sm" variant="outline" disabled>
-                              <ExternalLink />
-                              Live Demo
-                            </Button>
-                          )}
-                          <Button
-                            onClick={() => setExpandedCard(project.title)}
-                            size="sm"
-                            variant="ghost"
-                            className="ml-auto group/btn"
-                          >
-                            Details
-                            <ArrowRight className="transition-transform group-hover/btn:translate-x-1" />
+                      {/* Action buttons staying pinned to the bottom */}
+                      <div className="mt-auto pt-4 border-t border-border shrink-0 flex flex-wrap items-center gap-2">
+                        {project.github ? (
+                          <Button asChild size="sm" variant="outline">
+                            <a href={project.github} target="_blank" rel="noreferrer">
+                              <Github />
+                              Code
+                            </a>
                           </Button>
-                        </div>
+                        ) : (
+                          <div className="relative group/tooltip">
+                            <Button size="sm" variant="outline" disabled>
+                              <Github />
+                              Code
+                            </Button>
+                            <span className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 scale-0 transition-all rounded bg-popover border border-border px-2.5 py-1.5 text-xs text-popover-foreground group-hover/tooltip:scale-100 pointer-events-none whitespace-nowrap z-50 shadow-lg">
+                              Source Code Coming Soon
+                            </span>
+                          </div>
+                        )}
+                        {project.demoVideo ? (
+                          <Button
+                            onClick={() => setActiveVideo(project.demoVideo)}
+                            size="sm"
+                            variant="outline"
+                          >
+                            <ExternalLink />
+                            Live Demo
+                          </Button>
+                        ) : project.demo && project.demo !== "#" ? (
+                          <Button asChild size="sm" variant="outline">
+                            <a href={project.demo} target="_blank" rel="noreferrer">
+                              <ExternalLink />
+                              Live Demo
+                            </a>
+                          </Button>
+                        ) : (
+                          <Button size="sm" variant="outline" disabled>
+                            <ExternalLink />
+                            Live Demo
+                          </Button>
+                        )}
+                        <Button
+                          onClick={() => setExpandedCard(project.title)}
+                          size="sm"
+                          variant="ghost"
+                          className="ml-auto group/btn"
+                        >
+                          Details
+                          <ArrowRight className="transition-transform group-hover/btn:translate-x-1" />
+                        </Button>
                       </div>
                     </div>
                   </div>
