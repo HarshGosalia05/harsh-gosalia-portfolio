@@ -23,18 +23,33 @@ interface Project {
   github: string;
   demo: string;
   details: string;
+  category?: string;
+  badge?: string;
 }
 
 const PROJECTS: Project[] = [
   {
-    icon: Bot,
-    title: "Multi-Agent AI Research Assistant",
+    icon: Workflow,
+    title: "Incident Response Agent",
     description:
-      "An autonomous multi-agent system that plans, searches and synthesizes answers using RAG and LLMs.",
-    tech: ["Python", "LangChain", "FastAPI", "OpenAI"],
-    github: SOCIALS.github,
-    demo: "#",
+      "An AI-powered Incident Investigation platform developed during HackBaroda 2026. The system uses a multi-agent workflow, Retrieval-Augmented Generation (RAG), historical incident learning, root cause analysis, automated remediation recommendations, analytics dashboard, and investigation history to reduce incident resolution time.",
+    tech: [
+      "Python",
+      "FastAPI",
+      "React",
+      "TypeScript",
+      "LangChain",
+      "OpenAI",
+      "ChromaDB",
+      "RAG",
+      "Tailwind CSS",
+      "Framer Motion",
+    ],
+    github: "",
+    demo: "",
     details: "#",
+    category: "Featured AI Project",
+    badge: "HackBaroda 2026 — Round 2 Finalist",
   },
   {
     icon: ScanEye,
@@ -45,6 +60,7 @@ const PROJECTS: Project[] = [
     github: SOCIALS.github,
     demo: "#",
     details: "#",
+    category: "Computer Vision",
   },
   {
     icon: Workflow,
@@ -55,6 +71,7 @@ const PROJECTS: Project[] = [
     github: SOCIALS.github,
     demo: "#",
     details: "#",
+    category: "Automation",
   },
   {
     icon: FileSearch,
@@ -65,6 +82,7 @@ const PROJECTS: Project[] = [
     github: SOCIALS.github,
     demo: "#",
     details: "#",
+    category: "AI/RAG",
   },
   {
     icon: BarChart3,
@@ -75,6 +93,7 @@ const PROJECTS: Project[] = [
     github: SOCIALS.github,
     demo: "#",
     details: "#",
+    category: "Data Science",
   },
   {
     icon: FileUser,
@@ -85,6 +104,7 @@ const PROJECTS: Project[] = [
     github: SOCIALS.github,
     demo: "#",
     details: "#",
+    category: "Natural Language Processing",
   },
 ];
 
@@ -157,6 +177,20 @@ export function Projects() {
 
               {/* Body */}
               <div className="flex flex-1 flex-col p-6">
+                {(project.category || project.badge) && (
+                  <div className="flex items-center justify-between gap-2 mb-2">
+                    {project.category && (
+                      <span className="font-mono text-[10px] tracking-wider text-muted-foreground uppercase">
+                        {project.category}
+                      </span>
+                    )}
+                    {project.badge && (
+                      <span className="inline-flex items-center rounded-full bg-brand/10 px-2 py-0.5 text-[10px] font-medium text-brand border border-brand/20">
+                        {project.badge}
+                      </span>
+                    )}
+                  </div>
+                )}
                 <h3 className="font-display text-lg font-semibold">{project.title}</h3>
                 <p className="mt-2 line-clamp-2 text-sm leading-relaxed text-muted-foreground">
                   {project.description}
@@ -174,18 +208,32 @@ export function Projects() {
                 </div>
 
                 <div className="mt-6 flex flex-wrap items-center gap-2 pt-4 border-t border-border">
-                  <Button asChild size="sm" variant="outline">
-                    <a href={project.github} target="_blank" rel="noreferrer">
+                  {project.github ? (
+                    <Button asChild size="sm" variant="outline">
+                      <a href={project.github} target="_blank" rel="noreferrer">
+                        <Github />
+                        Code
+                      </a>
+                    </Button>
+                  ) : (
+                    <Button size="sm" variant="outline" disabled>
                       <Github />
                       Code
-                    </a>
-                  </Button>
-                  <Button asChild size="sm" variant="outline">
-                    <a href={project.demo} target="_blank" rel="noreferrer">
+                    </Button>
+                  )}
+                  {project.demo && project.demo !== "#" ? (
+                    <Button asChild size="sm" variant="outline">
+                      <a href={project.demo} target="_blank" rel="noreferrer">
+                        <ExternalLink />
+                        Live Demo
+                      </a>
+                    </Button>
+                  ) : (
+                    <Button size="sm" variant="outline" disabled>
                       <ExternalLink />
                       Live Demo
-                    </a>
-                  </Button>
+                    </Button>
+                  )}
                   <Button asChild size="sm" variant="ghost" className="ml-auto group/btn">
                     <a href={project.details}>
                       Details
