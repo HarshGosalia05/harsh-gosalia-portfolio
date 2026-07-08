@@ -1,50 +1,20 @@
+import { useState } from "react";
 import { motion } from "motion/react";
 import { Link } from "@tanstack/react-router";
-import { ArrowRight, Trophy, Medal, Rocket, type LucideIcon } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { ACHIEVEMENTS } from "@/data/certificates";
+import { ImageModal } from "@/components/ui/image-modal";
 
-interface Achievement {
-  emoji: string;
-  icon: LucideIcon;
+interface AchievementData {
+  id: string;
   title: string;
   organization: string;
-  date: string;
-  description: string;
+  year: string;
   category: string;
+  image: string;
+  description: string;
 }
-
-const ACHIEVEMENTS: Achievement[] = [
-  {
-    emoji: "🏆",
-    icon: Trophy,
-    title: "Smart India Hackathon 2025 Finalist",
-    organization: "Government of India",
-    date: "2025",
-    description:
-      "Selected as a finalist for Smart India Hackathon 2025 by developing an AI-powered Thermal Image Super Resolution solution for real-world applications.",
-    category: "National Hackathon",
-  },
-  {
-    emoji: "🥇",
-    icon: Medal,
-    title: "1st Prize — Tech Hackathon",
-    organization: "GLS University",
-    date: "2024",
-    description:
-      "Won First Prize by leading the development of Syntax Reviser, an interactive programming syntax learning platform.",
-    category: "Hackathon Winner",
-  },
-  {
-    emoji: "🚀",
-    icon: Rocket,
-    title: "HackBaroda 2026 — Round 2 Finalist",
-    organization: "HackBaroda",
-    date: "2026",
-    description:
-      "Selected until Round 2 after building an AI-powered Incident Response Agent using Multi-Agent AI, RAG and Workflow Automation.",
-    category: "National Hackathon",
-  },
-];
 
 const STATS: { label: string; value: string }[] = [
   { label: "Projects", value: "18+" },
@@ -66,7 +36,15 @@ const fadeUp = {
   }),
 };
 
-function TiltCard({ achievement, index }: { achievement: Achievement; index: number }) {
+function TiltCard({
+  achievement,
+  index,
+  onClick,
+}: {
+  achievement: AchievementData;
+  index: number;
+  onClick: () => void;
+}) {
   const handleMove = (e: React.MouseEvent<HTMLDivElement>) => {
     const el = e.currentTarget;
     const rect = el.getBoundingClientRect();
@@ -98,22 +76,16 @@ function TiltCard({ achievement, index }: { achievement: Achievement; index: num
       <span className="pointer-events-none absolute inset-0 rounded-2xl opacity-0 transition-opacity duration-500 group-hover:opacity-100 [background:linear-gradient(120deg,transparent,color-mix(in_oklab,var(--brand)_18%,transparent),transparent)]" />
 
       {/* Image */}
-      <div className="relative aspect-[16/10] overflow-hidden border-b border-border">
-        <div
-          className="absolute inset-0 transition-transform duration-500 ease-out group-hover:scale-110"
-          style={{
-            background: `linear-gradient(${135 + index * 30}deg, color-mix(in oklab, var(--brand) 30%, transparent), color-mix(in oklab, var(--brand-cyan) 22%, transparent))`,
-          }}
-        >
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent,color-mix(in_oklab,var(--background)_70%,transparent))]" />
-          <div className="absolute inset-0 flex items-center justify-center">
-            <span className="text-5xl drop-shadow-lg">{achievement.emoji}</span>
-          </div>
-          <achievement.icon
-            className="absolute right-4 bottom-4 h-6 w-6 text-foreground/60"
-            strokeWidth={1.4}
-          />
-        </div>
+      <div
+        className="relative aspect-[16/10] overflow-hidden border-b border-border bg-neutral-950/20 cursor-pointer flex items-center justify-center p-2"
+        onClick={onClick}
+      >
+        <img
+          src={achievement.image}
+          alt={achievement.title}
+          loading="lazy"
+          className="h-full w-full object-contain rounded-t-2xl transition-transform duration-500 ease-out group-hover:scale-105"
+        />
         {/* Category badge */}
         <span className="absolute top-4 left-4 rounded-full border border-brand/30 bg-background/70 px-3 py-1 text-xs font-medium text-brand backdrop-blur">
           {achievement.category}
@@ -122,19 +94,32 @@ function TiltCard({ achievement, index }: { achievement: Achievement; index: num
 
       {/* Body */}
       <div className="relative flex flex-1 flex-col p-6">
-        <h3 className="font-display text-lg font-semibold">{achievement.title}</h3>
+        <h3 className="font-display text-lg font-semibold leading-tight">{achievement.title}</h3>
         <p className="mt-1 text-sm text-muted-foreground">
-          {achievement.organization} · {achievement.date}
+          {achievement.organization} <span className="text-muted-foreground/30 font-mono mx-1.5">•</span> {achievement.year}
         </p>
-        <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
+        <p className="mt-3 text-sm leading-relaxed text-muted-foreground flex-1">
           {achievement.description}
         </p>
+
+        <div className="mt-6 flex items-center gap-3 pt-4 border-t border-border">
+          <span className="text-xs font-mono text-muted-foreground flex items-center gap-1.5 bg-secondary/40 border border-border px-3 py-1.5 rounded-md">
+            <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse" />
+            Certificate Available
+          </span>
+        </div>
       </div>
     </motion.article>
   );
 }
 
 export function Achievements() {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [activeIndex, setActiveIndex] = useState(0);
+
+  // Show only first 3 featured achievements on the homepage
+  const featuredAchievements = ACHIEVEMENTS.slice(0, 3);
+
   return (
     <section id="achievements" className="relative scroll-mt-16 overflow-hidden py-24 sm:py-32">
       <div className="mx-auto w-full max-w-[1280px] px-4 sm:px-6">
@@ -184,8 +169,16 @@ export function Achievements() {
 
         {/* Cards */}
         <div className="mt-14 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {ACHIEVEMENTS.map((achievement, i) => (
-            <TiltCard key={achievement.title} achievement={achievement} index={i} />
+          {featuredAchievements.map((achievement, i) => (
+            <TiltCard
+              key={achievement.title}
+              achievement={achievement}
+              index={i}
+              onClick={() => {
+                setActiveIndex(i);
+                setIsModalOpen(true);
+              }}
+            />
           ))}
         </div>
 
@@ -205,6 +198,15 @@ export function Achievements() {
           </Button>
         </motion.div>
       </div>
+
+      {/* Shared Image Modal for Full-Size Preview */}
+      <ImageModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        images={featuredAchievements}
+        currentIndex={activeIndex}
+        onNavigate={(index) => setActiveIndex(index)}
+      />
     </section>
   );
 }

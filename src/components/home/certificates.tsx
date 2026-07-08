@@ -1,83 +1,10 @@
+import { useState } from "react";
 import { motion } from "motion/react";
 import { Link } from "@tanstack/react-router";
-import {
-  ArrowRight,
-  Cloud,
-  GraduationCap,
-  BarChart3,
-  BookOpen,
-  Brain,
-  Monitor,
-  ExternalLink,
-  type LucideIcon,
-} from "lucide-react";
+import { ArrowRight, ExternalLink } from "lucide-react";
 import { Button } from "@/components/ui/button";
-
-interface Certificate {
-  icon: LucideIcon;
-  title: string;
-  issuer: string;
-  category: string;
-  description: string;
-  verifyUrl: string;
-}
-
-const CERTIFICATES: Certificate[] = [
-  {
-    icon: Cloud,
-    title: "Oracle Cloud Infrastructure AI Foundations Associate",
-    issuer: "Oracle",
-    category: "Artificial Intelligence",
-    description:
-      "Demonstrates foundational knowledge of AI and machine learning services on Oracle Cloud Infrastructure, including OCI Vision, Language and Speech.",
-    verifyUrl: "#",
-  },
-  {
-    icon: GraduationCap,
-    title: "AICTE Edunet Foundation Internship",
-    issuer: "AICTE · Shell · Edunet Foundation",
-    category: "Internship",
-    description:
-      "A structured industry internship program sponsored by AICTE, Shell and Edunet Foundation, covering real-world AI and data science project experience.",
-    verifyUrl: "#",
-  },
-  {
-    icon: BarChart3,
-    title: "Deloitte Data Analytics Job Simulation",
-    issuer: "Deloitte",
-    category: "Data Analytics",
-    description:
-      "Completed a virtual job simulation focused on data analytics, business intelligence, data cleaning, visualization and client storytelling.",
-    verifyUrl: "#",
-  },
-  {
-    icon: BookOpen,
-    title: "NPTEL — Recommender Systems",
-    issuer: "IIT Kharagpur",
-    category: "Machine Learning",
-    description:
-      "An in-depth course on recommender system design, collaborative filtering, content-based filtering and matrix factorization techniques.",
-    verifyUrl: "#",
-  },
-  {
-    icon: Brain,
-    title: "IBM SkillsBuild — Artificial Intelligence",
-    issuer: "IBM",
-    category: "Artificial Intelligence",
-    description:
-      "IBM-certified training in AI fundamentals, neural networks, deep learning concepts and responsible AI practices through the SkillsBuild platform.",
-    verifyUrl: "#",
-  },
-  {
-    icon: Monitor,
-    title: "Microsoft Power BI Workshop",
-    issuer: "Microsoft",
-    category: "Data Analytics",
-    description:
-      "Hands-on workshop covering data modeling, DAX calculations, interactive dashboard design and business intelligence reporting with Power BI.",
-    verifyUrl: "#",
-  },
-];
+import { CERTIFICATES } from "@/data/certificates";
+import { ImageModal } from "@/components/ui/image-modal";
 
 const STATS: { label: string; value: string }[] = [
   { label: "Professional Certificates", value: "20+" },
@@ -98,6 +25,12 @@ const fadeUp = {
 };
 
 export function Certificates() {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [activeCertIndex, setActiveCertIndex] = useState(0);
+
+  // Show only first 6 featured certificates on the homepage
+  const featuredCertificates = CERTIFICATES.slice(0, 6);
+
   return (
     <section id="certificates" className="relative scroll-mt-16 overflow-hidden py-24 sm:py-32">
       <div className="mx-auto w-full max-w-[1280px] px-4 sm:px-6">
@@ -148,7 +81,7 @@ export function Certificates() {
 
         {/* Cards */}
         <div className="mt-14 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {CERTIFICATES.map((cert, i) => (
+          {featuredCertificates.map((cert, i) => (
             <motion.article
               key={cert.title}
               initial="hidden"
@@ -159,18 +92,19 @@ export function Certificates() {
               className="group flex flex-col overflow-hidden rounded-2xl border border-border bg-card/40 backdrop-blur transition-all duration-300 hover:-translate-y-1.5 hover:border-brand/50 hover:shadow-glow"
             >
               {/* Thumbnail */}
-              <div className="relative aspect-[16/10] overflow-hidden border-b border-border">
-                <div
-                  className="absolute inset-0 transition-transform duration-500 ease-out group-hover:scale-110"
-                  style={{
-                    background: `linear-gradient(${135 + i * 30}deg, color-mix(in oklab, var(--brand) 30%, transparent), color-mix(in oklab, var(--brand-cyan) 22%, transparent))`,
-                  }}
-                >
-                  <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent,color-mix(in_oklab,var(--background)_70%,transparent))]" />
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <cert.icon className="h-14 w-14 text-foreground/80" strokeWidth={1.4} />
-                  </div>
-                </div>
+              <div
+                className="relative aspect-[16/10] overflow-hidden border-b border-border bg-neutral-950/20 cursor-pointer flex items-center justify-center p-2"
+                onClick={() => {
+                  setActiveCertIndex(i);
+                  setIsModalOpen(true);
+                }}
+              >
+                <img
+                  src={cert.image}
+                  alt={cert.title}
+                  loading="lazy"
+                  className="h-full w-full object-contain rounded-t-2xl transition-transform duration-500 ease-out group-hover:scale-105"
+                />
                 {/* Category badge */}
                 <span className="absolute top-4 left-4 rounded-full border border-brand/30 bg-background/70 px-3 py-1 text-xs font-medium text-brand backdrop-blur">
                   {cert.category}
@@ -179,24 +113,33 @@ export function Certificates() {
 
               {/* Body */}
               <div className="flex flex-1 flex-col p-6">
-                <h3 className="font-display text-lg font-semibold">{cert.title}</h3>
-                <p className="mt-1 text-sm text-muted-foreground">{cert.issuer}</p>
-                <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
+                <h3 className="font-display text-lg font-semibold leading-tight">{cert.title}</h3>
+                <p className="mt-1 text-sm text-muted-foreground">
+                  {cert.organization} <span className="text-muted-foreground/30 font-mono mx-1.5">•</span> {cert.year}
+                </p>
+                <p className="mt-3 text-sm leading-relaxed text-muted-foreground flex-1">
                   {cert.description}
                 </p>
 
                 <div className="mt-6 flex items-center gap-3 pt-4 border-t border-border">
-                  <Button asChild size="sm" variant="outline" className="group/btn">
-                    <a
-                      href={cert.verifyUrl}
-                      target="_blank"
-                      rel="noreferrer"
-                      className="inline-flex items-center gap-2"
-                    >
-                      <ExternalLink className="h-4 w-4" />
-                      Verify Certificate
-                    </a>
-                  </Button>
+                  {cert.verifyUrl ? (
+                    <Button asChild size="sm" variant="outline" className="group/btn">
+                      <a
+                        href={cert.verifyUrl}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="inline-flex items-center gap-2"
+                      >
+                        <ExternalLink className="h-4 w-4" />
+                        Verify Certificate
+                      </a>
+                    </Button>
+                  ) : (
+                    <span className="text-xs font-mono text-muted-foreground flex items-center gap-1.5 bg-secondary/40 border border-border px-3 py-1.5 rounded-md">
+                      <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse" />
+                      Certificate Available
+                    </span>
+                  )}
                 </div>
               </div>
             </motion.article>
@@ -219,6 +162,15 @@ export function Certificates() {
           </Button>
         </motion.div>
       </div>
+
+      {/* Shared Image Modal for Full-Size Preview */}
+      <ImageModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        images={featuredCertificates}
+        currentIndex={activeCertIndex}
+        onNavigate={(index) => setActiveCertIndex(index)}
+      />
     </section>
   );
 }

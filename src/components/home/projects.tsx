@@ -11,6 +11,7 @@ import {
   FileUser,
   Github,
   ExternalLink,
+  Activity,
   type LucideIcon,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -29,6 +30,7 @@ interface Project {
   badge?: string;
   features?: string[];
   demoVideo?: string;
+  hideDemo?: boolean;
 }
 
 const PROJECTS: Project[] = [
@@ -68,20 +70,26 @@ const PROJECTS: Project[] = [
     ],
   },
   {
-    icon: ScanEye,
-    title: "Real-Time Object Detection",
+    icon: Activity,
+    title: "MediScan – AI Disease Prediction Platform",
     description:
-      "A computer vision pipeline detecting and tracking objects in live video streams with high accuracy.",
-    tech: ["Python", "OpenCV", "TensorFlow", "YOLO"],
-    github: SOCIALS.github,
-    demo: "#",
+      "An AI-powered healthcare platform that predicts diseases using Machine Learning. The system currently supports asthma prediction using clinical and lifestyle parameters, provides prediction confidence, and is designed to expand for multiple diseases including pneumonia and dengue.",
+    tech: ["Python", "Streamlit", "Scikit-learn", "Random Forest", "MongoDB", "Pandas"],
+    github: "",
+    demo: "",
     details: "#",
-    category: "Computer Vision",
+    category: "Healthcare AI",
+    badge: "Machine Learning Project",
+    hideDemo: true,
     features: [
-      "YOLOv8 Real-Time Pipeline",
-      "Multi-Object Tracking",
-      "Custom Class Training",
-      "Low Latency Inference",
+      "Disease Prediction",
+      "Asthma Risk Assessment",
+      "Machine Learning Pipeline",
+      "Interactive Dashboard",
+      "Data Visualization",
+      "MongoDB Integration",
+      "Explainable AI Ready (XAI)",
+      "Responsive Interface",
     ],
   },
   {
@@ -264,7 +272,9 @@ export function Projects() {
                             )}
                           </div>
                         )}
-                        <h3 className="font-display text-lg font-semibold shrink-0">{project.title}</h3>
+                        <h3 className="font-display text-lg font-semibold shrink-0">
+                          {project.title}
+                        </h3>
                         <p className="mt-2 text-sm leading-relaxed text-muted-foreground line-clamp-2 shrink-0">
                           {project.description}
                         </p>
@@ -302,28 +312,29 @@ export function Projects() {
                             </span>
                           </div>
                         )}
-                        {project.demoVideo ? (
-                          <Button
-                            onClick={() => setActiveVideo(project.demoVideo)}
-                            size="sm"
-                            variant="outline"
-                          >
-                            <ExternalLink />
-                            Live Demo
-                          </Button>
-                        ) : project.demo && project.demo !== "#" ? (
-                          <Button asChild size="sm" variant="outline">
-                            <a href={project.demo} target="_blank" rel="noreferrer">
+                        {!project.hideDemo &&
+                          (project.demoVideo ? (
+                            <Button
+                              onClick={() => setActiveVideo(project.demoVideo)}
+                              size="sm"
+                              variant="outline"
+                            >
                               <ExternalLink />
                               Live Demo
-                            </a>
-                          </Button>
-                        ) : (
-                          <Button size="sm" variant="outline" disabled>
-                            <ExternalLink />
-                            Live Demo
-                          </Button>
-                        )}
+                            </Button>
+                          ) : project.demo && project.demo !== "#" ? (
+                            <Button asChild size="sm" variant="outline">
+                              <a href={project.demo} target="_blank" rel="noreferrer">
+                                <ExternalLink />
+                                Live Demo
+                              </a>
+                            </Button>
+                          ) : (
+                            <Button size="sm" variant="outline" disabled>
+                              <ExternalLink />
+                              Live Demo
+                            </Button>
+                          ))}
                         <Button
                           onClick={() => setExpandedCard(project.title)}
                           size="sm"
@@ -425,28 +436,29 @@ export function Projects() {
                             </span>
                           </div>
                         )}
-                        {project.demoVideo ? (
-                          <Button
-                            onClick={() => setActiveVideo(project.demoVideo)}
-                            size="sm"
-                            variant="outline"
-                          >
-                            <ExternalLink />
-                            Live Demo
-                          </Button>
-                        ) : project.demo && project.demo !== "#" ? (
-                          <Button asChild size="sm" variant="outline">
-                            <a href={project.demo} target="_blank" rel="noreferrer">
+                        {!project.hideDemo &&
+                          (project.demoVideo ? (
+                            <Button
+                              onClick={() => setActiveVideo(project.demoVideo)}
+                              size="sm"
+                              variant="outline"
+                            >
                               <ExternalLink />
                               Live Demo
-                            </a>
-                          </Button>
-                        ) : (
-                          <Button size="sm" variant="outline" disabled>
-                            <ExternalLink />
-                            Live Demo
-                          </Button>
-                        )}
+                            </Button>
+                          ) : project.demo && project.demo !== "#" ? (
+                            <Button asChild size="sm" variant="outline">
+                              <a href={project.demo} target="_blank" rel="noreferrer">
+                                <ExternalLink />
+                                Live Demo
+                              </a>
+                            </Button>
+                          ) : (
+                            <Button size="sm" variant="outline" disabled>
+                              <ExternalLink />
+                              Live Demo
+                            </Button>
+                          ))}
                         <Button
                           onClick={() => setExpandedCard(null)}
                           size="sm"
