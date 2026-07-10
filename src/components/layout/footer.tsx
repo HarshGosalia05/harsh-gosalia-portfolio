@@ -2,6 +2,7 @@ import { useCallback } from "react";
 import { Link, useNavigate, useRouterState } from "@tanstack/react-router";
 import { Github, Linkedin, Mail, FileText } from "lucide-react";
 import { SECTIONS, SITE, SOCIALS, CONTACT, type Section } from "@/lib/navigation";
+import hgLogo from "@/assets/logo/hg-logo.png";
 
 const NAV_OFFSET = 64;
 
@@ -72,10 +73,15 @@ export function Footer() {
             <button
               type="button"
               onClick={() => handleNav(SECTIONS[0])}
-              className="font-display text-2xl font-bold tracking-tight"
+              className="transition-transform duration-300 hover:scale-105"
               aria-label={`${SITE.name} — home`}
             >
-              HG<span className="text-gradient-brand">.</span>
+              <img
+                src={hgLogo}
+                alt={`${SITE.name} Logo`}
+                className="h-[30px] w-auto object-contain transition-all duration-300 hover:drop-shadow-[0_0_12px_var(--brand)] md:h-[36px]"
+                loading="lazy"
+              />
             </button>
             <p className="mt-4 max-w-sm text-sm leading-relaxed text-muted-foreground">
               AI Engineer building intelligent, production-grade software — turning machine learning

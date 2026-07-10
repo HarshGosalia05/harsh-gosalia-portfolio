@@ -224,14 +224,34 @@ export function Contact() {
   const update = (key: keyof typeof form) => (v: string) =>
     setForm((prev) => ({ ...prev, [key]: v }));
 
-  const handleSubmit = (e: FormEvent) => {
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     setSending(true);
-    window.setTimeout(() => {
+
+    try {
+      const response = await fetch("https://api.web3forms.com/submit", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+        body: JSON.stringify({
+          access_key: import.meta.env.VITE_WEB3FORMS_ACCESS_KEY,
+          ...form,
+        }),
+      });
+
+      if (response.ok) {
+        setForm({ name: "", email: "", subject: "", message: "" });
+        toast.success("Thank you! Your message has been sent successfully.");
+      } else {
+        toast.error("Failed to send message. Please try again.");
+      }
+    } catch (error) {
+      toast.error("Failed to send message. Please try again.");
+    } finally {
       setSending(false);
-      setForm({ name: "", email: "", subject: "", message: "" });
-      toast.success("Message sent! I'll get back to you soon.");
-    }, 900);
+    }
   };
 
   return (

@@ -16,6 +16,7 @@ import { ThemeProvider } from "@/components/theme/theme-provider";
 import { SiteLayout } from "@/components/layout/site-layout";
 import { Toaster } from "@/components/ui/sonner";
 import { SITE, SOCIALS } from "@/lib/navigation";
+import hgLogo from "@/assets/logo/hg-logo.png";
 
 // Applies the stored theme before first paint. Dark is the default.
 const themeInitScript = `(function(){try{var t=localStorage.getItem("hg-theme");if(t==="light"){document.documentElement.classList.remove("dark")}else{document.documentElement.classList.add("dark")}}catch(e){document.documentElement.classList.add("dark")}})();`;
@@ -98,7 +99,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     ],
     links: [
       { rel: "stylesheet", href: appCss },
-      { rel: "icon", href: "/favicon.ico", type: "image/x-icon" },
+      { rel: "icon", href: hgLogo, type: "image/png" },
       { rel: "preconnect", href: "https://fonts.googleapis.com" },
       { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
       {

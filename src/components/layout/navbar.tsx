@@ -6,6 +6,7 @@ import { SECTIONS, SITE, type Section } from "@/lib/navigation";
 import { ThemeToggle } from "@/components/theme/theme-toggle";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import hgLogo from "@/assets/logo/hg-logo.png";
 
 const NAV_OFFSET = 64; // fixed navbar height (h-16)
 
@@ -118,16 +119,20 @@ export function Navbar() {
         <button
           type="button"
           onClick={() => handleNav(SECTIONS[0])}
-          className="font-display text-lg font-semibold tracking-tight transition-transform duration-300 hover:scale-105"
+          className="transition-transform duration-300 hover:scale-105"
           aria-label={`${SITE.name} — home`}
         >
-          HG<span className="text-gradient-brand">.</span>
+          <img
+            src={hgLogo}
+            alt={`${SITE.name} Logo`}
+            className="h-[30px] w-auto object-contain transition-all duration-300 hover:drop-shadow-[0_0_12px_var(--brand)] md:h-[36px]"
+          />
         </button>
 
         {/* Desktop links */}
         <div className="hidden items-center gap-0.5 lg:flex">
           {SECTIONS.map((section) => {
-            const active = isHome && activeId === section.id;
+            const active = (isHome && activeId === section.id) || pathname === `/${section.id}`;
             return (
               <button
                 key={section.id}
@@ -178,22 +183,25 @@ export function Navbar() {
             className="overflow-hidden border-t border-border lg:hidden"
           >
             <div className="mx-auto flex max-w-[1280px] flex-col gap-1 px-4 py-4 sm:px-6">
-              {SECTIONS.map((section) => (
-                <button
-                  key={section.id}
-                  type="button"
-                  onClick={() => handleNav(section)}
-                  aria-current={isHome && activeId === section.id ? "true" : undefined}
-                  className={cn(
-                    "min-h-11 rounded-lg px-3 py-2.5 text-left text-sm transition-colors duration-300",
-                    isHome && activeId === section.id
-                      ? "bg-accent text-foreground"
-                      : "text-muted-foreground hover:bg-accent hover:text-foreground",
-                  )}
-                >
-                  {section.label}
-                </button>
-              ))}
+              {SECTIONS.map((section) => {
+                const active = (isHome && activeId === section.id) || pathname === `/${section.id}`;
+                return (
+                  <button
+                    key={section.id}
+                    type="button"
+                    onClick={() => handleNav(section)}
+                    aria-current={active ? "true" : undefined}
+                    className={cn(
+                      "min-h-11 rounded-lg px-3 py-2.5 text-left text-sm transition-colors duration-300",
+                      active
+                        ? "bg-accent text-foreground"
+                        : "text-muted-foreground hover:bg-accent hover:text-foreground",
+                    )}
+                  >
+                    {section.label}
+                  </button>
+                );
+              })}
             </div>
           </motion.div>
         )}
