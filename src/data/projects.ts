@@ -17,6 +17,13 @@ import thermalImg from "@/assets/thermal-sr.png";
 import thermalReport from "@/assets/documents/thermal-sr-report.pdf";
 import fileNestImg from "@/assets/filenest.png";
 import incidentResponseImg from "@/assets/incident-response-agent.jpeg";
+import jobAppTrackerImg from "@/assets/job-application-auto-tracker.png";
+import jobAppTrackerVideo from "@/assets/videos/job-application-auto-tracker-demo.mp4";
+import jobLeadTrackerImg from "@/assets/job-lead-tracker.png";
+import leadIntelligenceImg from "@/assets/lead-intelligence-workflow.png";
+import leadIntelligenceVideo from "@/assets/videos/lead-intelligence-demo.mp4";
+import glsStudentDashboardImg from "@/assets/gls-student-dashboard.png";
+import glsStudentDashboardVideo from "@/assets/videos/gls-student-dashboard-demo.mp4";
 
 export interface Project {
   icon: LucideIcon;
@@ -35,6 +42,7 @@ export interface Project {
   demoLabel?: string;
   longOverview?: string;
   detailedSections?: { title: string; items: string[] }[];
+  containImage?: boolean;
 }
 
 export const PROJECTS: Project[] = [
@@ -352,57 +360,286 @@ export const PROJECTS: Project[] = [
   },
   {
     icon: Workflow,
-    title: "AI Workflow Automation Suite",
+    title: "Lead Intelligence Aggregator – Multi-Source Business Scoring",
     description:
-      "A workflow automation platform built with n8n that connects APIs, AI models and webhooks to automate repetitive business processes.",
-    tech: ["n8n", "REST APIs", "Webhooks", "LLMs", "JavaScript"],
-    github: "",
-    demo: "",
-    details: "#",
-    category: "Workflow Automation",
-    badge: "Internship Project",
-    features: [
-      "n8n Orchestration",
-      "API Integration",
-      "Webhook Triggers",
-      "LLM Agent Workflows",
+      "Designed and developed an end-to-end Lead Intelligence Aggregator using n8n that collects business information from multiple public data sources, cleans and merges duplicate records, calculates opportunity scores based on configurable business rules, stores results in Google Sheets, logs workflow failures, and automatically sends lead summaries and error alerts through Telegram.",
+    longOverview: "Built a fully automated n8n workflow that aggregates business information from Google Maps (Apify) and OpenStreetMap, normalizes data into a common structure, removes duplicate businesses, resolves conflicts between sources, computes a dynamic opportunity score based on configurable business rules, logs qualified leads into Google Sheets, records workflow failures into a dedicated Error Sheet, and sends automated Telegram notifications for both workflow errors and Top 5 business opportunities.",
+    tech: [
+      "n8n",
+      "JavaScript",
+      "HTTP Request Nodes",
+      "Google Sheets API",
+      "Telegram Bot API",
+      "Apify Google Maps API",
+      "OpenStreetMap Nominatim API",
+      "Merge Node",
+      "Sort Node",
+      "Code Nodes"
     ],
+    github: "https://github.com/HarshGosalia05/Task03-Lead-Intelligence-Aggregator",
+    demo: "",
+    demoVideo: leadIntelligenceVideo,
+    details: "#",
+    category: "Workflow Automation | n8n | Business Lead Intelligence",
+    badge: "Workflow Automation",
+    coverImage: leadIntelligenceImg,
+    containImage: true,
+    features: [
+      "Multi-source lead aggregation",
+      "Google Maps (Apify) integration",
+      "OpenStreetMap (Nominatim) integration",
+      "Data normalization",
+      "Duplicate detection",
+      "Conflict resolution",
+      "Website status processing",
+      "Social presence detection",
+      "Confidence level calculation",
+      "Dynamic opportunity scoring",
+      "Automatic Google Sheets reporting",
+      "Error logging system",
+      "Telegram workflow alerts",
+      "Telegram Top-5 lead notifications",
+      "Configurable scoring weights",
+      "Modular workflow architecture"
+    ],
+    detailedSections: [
+      {
+        title: "Problem Statement",
+        items: [
+          "Sales and marketing teams often spend significant time manually searching multiple platforms to identify high-quality business leads.",
+          "Data from different sources is inconsistent, duplicated, incomplete, and difficult to prioritize.",
+          "There is also no centralized automation to monitor workflow failures or instantly notify teams about important opportunities."
+        ]
+      },
+      {
+        title: "Solution",
+        items: [
+          "Built a fully automated n8n workflow that aggregates business information from Google Maps (Apify) and OpenStreetMap.",
+          "Normalizes data into a common structure and removes duplicate businesses.",
+          "Computes a dynamic opportunity score based on configurable business rules.",
+          "Logs qualified leads into Google Sheets and records workflow failures into a dedicated Error Sheet.",
+          "Sends automated Telegram notifications for both workflow errors and Top 5 business opportunities."
+        ]
+      },
+      {
+        title: "Workflow Architecture",
+        items: [
+          "Manual Trigger → Configuration Node → Parallel Execution (Google Maps API, OpenStreetMap API, Website & Social Presence Processing) → Normalize Google Maps Data → Normalize OpenStreetMap Data → Merge Multiple Sources → Duplicate Detection & Conflict Resolution → Website & Confidence Processing → Opportunity Score Calculation → Remove Invalid Records → Sort by Opportunity Score → Google Sheets Output → Generate Telegram Summary → Send Top 5 Leads to Telegram",
+          "Separate Error Branch: API Failure → Continue On Error → Log Error to Google Sheets → Send Telegram Error Alert"
+        ]
+      },
+      {
+        title: "Scoring Logic",
+        items: [
+          "No Website = +30",
+          "Social Presence = +15",
+          "High Rating & Reviews = +25",
+          "Target Business Category = +15",
+          "Multi-source Confirmation = +15"
+        ]
+      },
+      {
+        title: "Project Outcome",
+        items: [
+          "Successfully automated business lead aggregation with dynamic scoring.",
+          "Reduced manual effort in lead discovery and improved lead prioritization.",
+          "Centralized reporting through Google Sheets.",
+          "Enabled real-time Telegram notifications for both workflow monitoring and high-value business opportunities."
+        ]
+      }
+    ]
   },
   {
     icon: BarChart3,
-    title: "Job Lead Intelligence Aggregator",
+    title: "AI-Powered Job Lead Tracker",
     description:
-      "Aggregates business leads from multiple sources, removes duplicates and generates opportunity scores using custom business logic.",
-    tech: ["n8n", "Google Maps", "JavaScript", "APIs", "Google Sheets"],
-    github: "",
+      "An AI-powered workflow automation system that automatically discovers remote software jobs, filters relevant opportunities, evaluates each role using Groq LLM, ranks jobs based on AI fit scores and stores structured results in Google Sheets.",
+    longOverview: "This project was developed during my Automation Internship at Xyzon.\n\nThe objective was to automate the repetitive task of searching remote software jobs every day.\n\nInstead of manually browsing job portals, the workflow automatically fetches remote software jobs from the Remotive API, filters only relevant software roles, evaluates each opportunity using Groq LLM, generates an AI-based fit score, ranks jobs by relevance and stores the final results inside Google Sheets.\n\nThis automation significantly reduces manual effort while helping developers quickly identify the most suitable opportunities.",
+    tech: [
+      "n8n",
+      "JavaScript",
+      "Groq LLM",
+      "Remotive API",
+      "Google Sheets API",
+      "REST APIs",
+      "HTTP Request",
+      "AI Agent",
+      "JSON Processing",
+      "Workflow Automation"
+    ],
+    github: "https://github.com/HarshGosalia05/n8n-aAI-Powered-Job-Lead-Tracker",
     demo: "",
     details: "#",
-    category: "Automation",
-    badge: "Lead Intelligence",
+    category: "Workflow Automation",
+    badge: "Xyzon Internship Project",
+    coverImage: jobLeadTrackerImg,
+    containImage: true,
     features: [
-      "Lead Aggregation",
-      "De-duplication Engine",
-      "Opportunity Scoring",
-      "Google Sheets Sync",
+      "Automated Job Discovery",
+      "Daily Scheduled Execution",
+      "Remotive API Integration",
+      "AI Job Ranking",
+      "Groq LLM Integration",
+      "Intelligent Job Filtering",
+      "AI Recommendation Summary",
+      "Google Sheets Integration",
+      "Duplicate Prevention",
+      "Match Percentage Calculation",
+      "Workflow Automation",
+      "Production Ready Architecture"
     ],
+    detailedSections: [
+      {
+        title: "Problem Solved",
+        items: [
+          "Job seekers spend considerable time manually browsing multiple job portals.",
+          "Relevant opportunities are often missed.",
+          "Evaluating every job manually is repetitive and inefficient.",
+          "Keeping job records updated every day is difficult."
+        ]
+      },
+      {
+        title: "Solution",
+        items: [
+          "The workflow fully automates the entire process.",
+          "Fetches latest remote jobs",
+          "Filters software-related roles",
+          "Sends each job title to Groq LLM",
+          "Generates AI fit score",
+          "Produces AI recommendation",
+          "Ranks opportunities",
+          "Removes duplicate entries",
+          "Updates Google Sheets automatically"
+        ]
+      },
+      {
+        title: "Workflow",
+        items: [
+          "Schedule Trigger → Remotive API → JavaScript Processing → Keyword Filtering → Groq AI Agent → AI Response Parsing → Google Sheets"
+        ]
+      },
+      {
+        title: "Challenges Solved",
+        items: [
+          "AI JSON parsing",
+          "Prompt Engineering",
+          "Duplicate record handling",
+          "Workflow synchronization",
+          "AI retry logic",
+          "Keyword optimization"
+        ]
+      },
+      {
+        title: "Real World Impact",
+        items: [
+          "Eliminates repetitive job searching.",
+          "Saves daily manual effort.",
+          "Automatically ranks jobs using AI.",
+          "Maintains a structured job tracker.",
+          "Demonstrates practical AI workflow automation."
+        ]
+      },
+      {
+        title: "Future Improvements",
+        items: [
+          "Resume Matching",
+          "LinkedIn Integration",
+          "Indeed Integration",
+          "Telegram Notifications",
+          "WhatsApp Alerts",
+          "Email Digest",
+          "Dashboard Analytics",
+          "Multi-platform Job Search"
+        ]
+      }
+    ]
   },
   {
     icon: FileUser,
-    title: "AI Job Application Tracker",
+    title: "AI Job Application Auto Tracker",
     description:
-      "Tracks job applications automatically using Gmail, Google Sheets, Telegram and workflow automation for centralized monitoring.",
-    tech: ["n8n", "Gmail API", "Google Sheets", "Telegram", "JavaScript"],
-    github: "",
-    demo: "",
-    details: "#",
-    category: "Career Automation",
-    badge: "Automation",
-    features: [
-      "Gmail Application Detection",
-      "Automated Tracking Sheets",
-      "Telegram Notifications",
-      "Centralized Dashboard",
+      "An intelligent workflow automation built using n8n that automatically tracks job application emails, stores applicant information in Google Sheets and instantly sends Telegram notifications.",
+    longOverview: "AI Job Application Auto Tracker is an automation workflow developed to eliminate manual tracking of job application emails.\n\nWhenever a new application email arrives in Gmail, the workflow automatically extracts important information, checks whether the application already exists, stores new records inside Google Sheets and sends real-time notifications through Telegram.\n\nThe system reduces repetitive work while ensuring every application is recorded accurately.",
+    tech: [
+      "n8n",
+      "Gmail API",
+      "Google Sheets API",
+      "Telegram Bot API",
+      "Webhooks",
+      "REST APIs",
+      "JavaScript Expressions"
     ],
+    github: "https://github.com/HarshGosalia05/job-application-auto-tracker",
+    demo: "",
+    demoVideo: jobAppTrackerVideo,
+    coverImage: jobAppTrackerImg,
+    details: "#",
+    category: "Workflow Automation • n8n",
+    badge: "Automation Project",
+    features: [
+      "Gmail Trigger",
+      "Automatic Email Processing",
+      "Data Extraction",
+      "Duplicate Detection",
+      "Google Sheets Integration",
+      "Telegram Notifications",
+      "Workflow Automation",
+      "Real-time Tracking",
+      "Low-Code Development",
+      "API Integration"
+    ],
+    detailedSections: [
+      {
+        title: "Problem Statement",
+        items: [
+          "Job seekers receive applications from multiple companies.",
+          "Tracking applications manually becomes difficult.",
+          "Duplicate records are common.",
+          "Important emails may be missed.",
+          "Following application progress is time-consuming."
+        ]
+      },
+      {
+        title: "Solution",
+        items: [
+          "The workflow completely automates the process.",
+          "Monitors Gmail",
+          "Extracts applicant details",
+          "Reads existing Google Sheet records",
+          "Detects duplicates",
+          "Adds only new applications",
+          "Sends Telegram notifications"
+        ]
+      },
+      {
+        title: "Workflow",
+        items: [
+          "Gmail Trigger → Extract Email Fields → Read Google Sheet → Duplicate Check → Append New Record → Telegram Notification"
+        ]
+      },
+      {
+        title: "Real World Impact",
+        items: [
+          "Eliminates manual tracking.",
+          "Prevents duplicate application entries.",
+          "Saves time.",
+          "Provides instant notifications.",
+          "Maintains centralized application records."
+        ]
+      },
+      {
+        title: "Future Improvements",
+        items: [
+          "Resume Parsing",
+          "AI Email Classification",
+          "ATS Status Detection",
+          "Dashboard Analytics",
+          "Weekly Reports",
+          "Calendar Integration",
+          "Recruiter Follow-up Reminder"
+        ]
+      }
+    ]
   },
   {
     icon: Film,
@@ -426,20 +663,88 @@ export const PROJECTS: Project[] = [
   },
   {
     icon: Smartphone,
-    title: "Flutter Learning Management App",
+    title: "GLS Student Dashboard",
     description:
-      "A mobile learning platform inspired by Moodle that provides course management, learning resources and student-friendly navigation.",
-    tech: ["Flutter", "Dart", "Firebase", "SQLite"],
-    github: "",
-    demo: "",
-    details: "#",
-    category: "Mobile Development",
-    badge: "Flutter",
-    features: [
-      "Course Management",
-      "Resource Access",
-      "Offline Database (SQLite)",
-      "Firebase Sync",
+      "A Flutter-based academic management application that helps students organize subjects, access study materials, monitor progress and manage their academic activities through a modern mobile interface.",
+    longOverview: "GLS Student Dashboard is a Flutter-based mobile application developed to simplify academic management for university students.\n\nThe application provides a centralized platform where students can organize their subjects, access learning materials, monitor academic progress and quickly navigate between different courses.\n\nInstead of managing notes and course information manually across multiple platforms, students can access everything from a single intuitive mobile application.",
+    tech: [
+      "Flutter",
+      "Dart",
+      "Material Design",
+      "Android Studio",
+      "Firebase Ready"
     ],
+    github: "https://github.com/HarshGosalia05/Flutter_Project_sem_6",
+    demo: "",
+    demoVideo: glsStudentDashboardVideo,
+    coverImage: glsStudentDashboardImg,
+    containImage: true,
+    details: "#",
+    category: "Mobile Application • Flutter",
+    badge: "Academic Management App",
+    features: [
+      "Student Dashboard",
+      "Pinned Subjects",
+      "Course Management",
+      "Recently Accessed",
+      "Progress Tracking",
+      "Academic Navigation",
+      "Material Organization",
+      "Mobile Friendly Interface",
+      "Clean UI",
+      "Responsive Design"
+    ],
+    detailedSections: [
+      {
+        title: "Problem Statement",
+        items: [
+          "Students often use multiple applications and websites to manage their studies.",
+          "Course materials become scattered.",
+          "Tracking progress manually is inconvenient.",
+          "Finding frequently used subjects takes time."
+        ]
+      },
+      {
+        title: "Solution",
+        items: [
+          "The application provides a unified academic dashboard.",
+          "Pin favorite subjects",
+          "Browse all courses",
+          "Access recently opened subjects",
+          "Track learning progress",
+          "Navigate quickly through academic content",
+          "Improve daily productivity"
+        ]
+      },
+      {
+        title: "Architecture",
+        items: [
+          "Flutter UI → Business Logic → Data Models → Local Storage → Student Dashboard"
+        ]
+      },
+      {
+        title: "Real World Impact",
+        items: [
+          "Simplifies academic organization.",
+          "Reduces time spent searching study materials.",
+          "Improves learning productivity.",
+          "Provides a modern student experience."
+        ]
+      },
+      {
+        title: "Future Enhancements",
+        items: [
+          "Firebase Authentication",
+          "Cloud Sync",
+          "Attendance Tracking",
+          "Assignment Submission",
+          "Timetable",
+          "Push Notifications",
+          "Faculty Portal",
+          "Notes Synchronization",
+          "AI Study Assistant"
+        ]
+      }
+    ]
   },
 ];

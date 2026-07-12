@@ -33,7 +33,7 @@ export function ProjectCard({
                 <img
                   src={project.coverImage}
                   alt={project.title}
-                  className="w-full h-full object-cover object-center transition-transform duration-400 ease-out group-hover:scale-[1.04]"
+                  className={`w-full h-full ${project.containImage ? 'object-contain' : 'object-cover'} object-center transition-transform duration-400 ease-out group-hover:scale-[1.04]`}
                   onError={(e) => {
                     (e.currentTarget.parentElement as HTMLElement).style.display = 'none';
                   }}
