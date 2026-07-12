@@ -125,8 +125,8 @@ export function ProjectCard({
                 ) : project.demo && project.demo !== "#" ? (
                   <Button asChild size="sm" variant="outline">
                     <a href={project.demo} target="_blank" rel="noreferrer">
-                      <ExternalLink />
-                      Live Demo
+                      {project.demoLabel ? null : <ExternalLink />}
+                      {project.demoLabel || "Live Demo"}
                     </a>
                   </Button>
                 ) : (
@@ -152,9 +152,9 @@ export function ProjectCard({
         <div
           className={`absolute inset-0 w-full h-full flex flex-col justify-between p-6 overflow-hidden rounded-2xl border border-border bg-card/80 [backface-visibility:hidden] [-webkit-backface-visibility:hidden] [transform:rotateY(180deg)] ${!isFlipped ? "pointer-events-none" : ""}`}
         >
-          <div className="flex-1 flex flex-col justify-start">
+          <div className="flex-1 flex flex-col justify-start overflow-y-auto pr-2 pb-2 [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:bg-border/50 [&::-webkit-scrollbar-thumb]:rounded-full hover:[&::-webkit-scrollbar-thumb]:bg-border">
             {(project.category || project.badge) && (
-              <div className="flex items-center justify-between gap-2 mb-3">
+              <div className="flex items-center justify-between gap-2 mb-3 shrink-0">
                 {project.category && (
                   <span className="font-mono text-[10px] tracking-wider text-muted-foreground uppercase">
                     {project.category}
@@ -167,21 +167,38 @@ export function ProjectCard({
                 )}
               </div>
             )}
-            <h3 className="font-display text-lg font-semibold mb-3">{project.title}</h3>
+            <h3 className="font-display text-lg font-semibold mb-3 shrink-0">{project.title}</h3>
 
             {/* Short Project Overview */}
-            <div className="mb-4">
+            <div className="mb-4 shrink-0">
               <h4 className="text-[10px] font-semibold text-brand uppercase tracking-wider mb-1">
                 Overview
               </h4>
-              <p className="text-xs leading-relaxed text-muted-foreground line-clamp-3">
-                {project.description}
+              <p className={`text-xs leading-relaxed text-muted-foreground ${project.detailedSections ? '' : 'line-clamp-3'} whitespace-pre-line`}>
+                {project.longOverview || project.description}
               </p>
             </div>
 
-            {/* Key Features */}
-            {project.features && project.features.length > 0 && (
-              <div className="mb-4">
+            {/* Extended Details */}
+            {project.detailedSections && project.detailedSections.map((section) => (
+              <div key={section.title} className="mb-4 shrink-0">
+                <h4 className="text-[10px] font-semibold text-brand uppercase tracking-wider mb-1.5">
+                  {section.title}
+                </h4>
+                <ul className="space-y-1.5 text-xs text-muted-foreground">
+                  {section.items.map((item, idx) => (
+                    <li key={idx} className="flex items-start gap-1.5">
+                      <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-brand" />
+                      <span>{item}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+
+            {/* Key Features (Fallback) */}
+            {!project.detailedSections && project.features && project.features.length > 0 && (
+              <div className="mb-4 shrink-0">
                 <h4 className="text-[10px] font-semibold text-brand uppercase tracking-wider mb-1.5">
                   Key Features
                 </h4>
@@ -244,8 +261,8 @@ export function ProjectCard({
                 ) : project.demo && project.demo !== "#" ? (
                   <Button asChild size="sm" variant="outline">
                     <a href={project.demo} target="_blank" rel="noreferrer">
-                      <ExternalLink />
-                      Live Demo
+                      {project.demoLabel ? null : <ExternalLink />}
+                      {project.demoLabel || "Live Demo"}
                     </a>
                   </Button>
                 ) : (
