@@ -1,7 +1,7 @@
 import { useCallback, useState } from "react";
 import { motion } from "motion/react";
 import { Link } from "@tanstack/react-router";
-import { ArrowRight, Download, Github, Linkedin, Mail, MapPin, Phone } from "lucide-react";
+import { ArrowRight, Download, Github, Linkedin, Mail, MapPin, Phone, FileText } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { SOCIALS, CONTACT } from "@/lib/navigation";
 import { TypingText } from "./typing-text";
@@ -168,12 +168,20 @@ export function Hero() {
                 <ArrowRight className="transition-transform group-hover:translate-x-1" />
               </Link>
             </Button>
-            <Button asChild size="lg" variant="outline">
-              <a href={CONTACT.resume} download>
-                <Download />
-                Download Resume
-              </a>
-            </Button>
+            <div className="flex items-center gap-2">
+              <Button asChild size="lg" variant="outline">
+                <a href={CONTACT.resume} target="_blank" rel="noreferrer">
+                  <FileText />
+                  View Resume
+                </a>
+              </Button>
+              <Button asChild variant="outline" className="h-10 w-10 shrink-0 px-0" title="Download Resume">
+                <a href={CONTACT.resume} download="Harsh_Gosalia_Resume.pdf">
+                  <Download />
+                  <span className="sr-only">Download Resume</span>
+                </a>
+              </Button>
+            </div>
           </motion.div>
 
           <motion.div variants={item} className="mt-8 flex flex-wrap gap-3">

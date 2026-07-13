@@ -228,6 +228,18 @@ export function Contact() {
     e.preventDefault();
     setSending(true);
 
+    const accessKey = import.meta.env.VITE_WEB3FORMS_ACCESS_KEY;
+    console.log("1. VITE_WEB3FORMS_ACCESS_KEY returning a value?", !!accessKey);
+    console.log("2. Key length:", accessKey ? accessKey.length : 0);
+
+    const payload = {
+      access_key: accessKey,
+      ...form,
+    };
+    
+    console.log("5. Sending as JSON. Content-Type: application/json");
+    console.log("6. Included keys in payload:", Object.keys(payload));
+
     try {
       const response = await fetch("https://api.web3forms.com/submit", {
         method: "POST",
@@ -235,11 +247,23 @@ export function Contact() {
           "Content-Type": "application/json",
           Accept: "application/json",
         },
-        body: JSON.stringify({
-          access_key: import.meta.env.VITE_WEB3FORMS_ACCESS_KEY,
-          ...form,
-        }),
+        body: JSON.stringify(payload),
       });
+
+      const responseBody = await response.text();
+      console.log("4. HTTP status code:", response.status);
+      console.log("3. Response body:", responseBody);
+      
+      let jsonResponse;
+      try {
+        jsonResponse = JSON.parse(responseBody);
+      } catch (e) {}
+
+      if (!response.ok) {
+        console.log("7. Exact reason Web3Forms returns failure:", jsonResponse?.message || "Unknown error (check response body)");
+      } else {
+        console.log("Form submission succeeded!");
+      }
 
       if (response.ok) {
         setForm({ name: "", email: "", subject: "", message: "" });
@@ -248,6 +272,7 @@ export function Contact() {
         toast.error("Failed to send message. Please try again.");
       }
     } catch (error) {
+      console.error("Fetch error:", error);
       toast.error("Failed to send message. Please try again.");
     } finally {
       setSending(false);

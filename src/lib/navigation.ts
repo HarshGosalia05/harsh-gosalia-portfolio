@@ -51,7 +51,7 @@ export const SOCIALS = {
 } as const;
 
 /** Single reusable resume link used everywhere across the site. */
-export const RESUME_URL = "/Harsh_Gosalia_Resume.pdf";
+export const RESUME_URL = "/harsh-gosalia-resume.pdf";
 
 export const CONTACT = {
   email: "harshgosalia05@gmail.com",
