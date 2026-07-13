@@ -11,12 +11,11 @@ import { MotionConfig } from "motion/react";
 import { useEffect, type ReactNode } from "react";
 
 import appCss from "../styles.css?url";
-import { reportLovableError } from "../lib/lovable-error-reporting";
+
 import { ThemeProvider } from "@/components/theme/theme-provider";
 import { SiteLayout } from "@/components/layout/site-layout";
 import { Toaster } from "@/components/ui/sonner";
 import { SITE, SOCIALS } from "@/lib/navigation";
-import hgLogo from "@/assets/logo/hg-logo.png";
 
 // Applies the stored theme before first paint. Dark is the default.
 const themeInitScript = `(function(){try{var t=localStorage.getItem("hg-theme");if(t==="light"){document.documentElement.classList.remove("dark")}else{document.documentElement.classList.add("dark")}}catch(e){document.documentElement.classList.add("dark")}})();`;
@@ -46,9 +45,6 @@ function NotFoundComponent() {
 function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
   console.error(error);
   const router = useRouter();
-  useEffect(() => {
-    reportLovableError(error, { boundary: "tanstack_root_error_component" });
-  }, [error]);
 
   return (
     <div className="flex min-h-[70vh] items-center justify-center px-5">
@@ -93,13 +89,16 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { property: "og:description", content: SITE.description },
       { property: "og:type", content: "website" },
       { property: "og:site_name", content: SITE.name },
+      { property: "og:image", content: "/favicon.png" },
       { name: "twitter:card", content: "summary_large_image" },
       { name: "twitter:title", content: SITE.title },
       { name: "twitter:description", content: SITE.description },
+      { name: "twitter:image", content: "/favicon.png" },
     ],
     links: [
       { rel: "stylesheet", href: appCss },
-      { rel: "icon", href: hgLogo, type: "image/png" },
+      { rel: "icon", href: "/favicon.png", type: "image/png" },
+      { rel: "apple-touch-icon", href: "/favicon.png" },
       { rel: "preconnect", href: "https://fonts.googleapis.com" },
       { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
       {

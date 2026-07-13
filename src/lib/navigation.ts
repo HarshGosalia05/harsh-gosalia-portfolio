@@ -36,11 +36,11 @@ export const SECTIONS: Section[] = [
 
 export const SITE = {
   name: "Harsh Gosalia",
-  title: "Harsh Gosalia — AI & Machine Learning Engineer",
+  title: "Harsh Gosalia | AI & Full Stack Developer",
   description:
-    "Portfolio of Harsh Gosalia, a Computer Science Engineering (AI & ML) student at GLS University, Ahmedabad — building intelligent, production-grade AI, ML and automation software.",
+    "Portfolio of Harsh Gosalia, an AI & Full Stack Developer building intelligent, production-grade AI, ML and automation software.",
   keywords:
-    "Harsh Gosalia, AI Engineer, Machine Learning Engineer, Deep Learning, LLMs, RAG, Multi-Agent AI, Automation, n8n, Computer Vision, FastAPI, React, GLS University, Ahmedabad, portfolio",
+    "Harsh Gosalia, AI Engineer, Full Stack Developer, Machine Learning Engineer, Deep Learning, LLMs, RAG, Multi-Agent AI, Automation, n8n, Computer Vision, FastAPI, React, portfolio",
   university: "GLS University",
   department: "Computer Science Engineering (AI & ML)",
 } as const;
