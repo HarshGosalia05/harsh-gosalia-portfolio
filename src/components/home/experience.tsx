@@ -1,9 +1,9 @@
 import { motion } from "motion/react";
 import { Link } from "@tanstack/react-router";
-import { ArrowRight, BrainCircuit, Workflow, Trophy, type LucideIcon } from "lucide-react";
+import { ArrowRight, BrainCircuit, Workflow, GraduationCap, type LucideIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
-type Status = "Completed" | "Ongoing";
+type Status = "Completed" | "Ongoing" | "Present" | "None";
 
 interface ExperienceItem {
   icon: LucideIcon;
@@ -13,37 +13,79 @@ interface ExperienceItem {
   status: Status;
   description: string;
   tech: string[];
+  type?: string;
 }
 
 const EXPERIENCE: ExperienceItem[] = [
   {
+    icon: Workflow,
+    position: "Automation Intern",
+    organization: "Xyzon Innovations",
+    duration: "Jun 2026 – Present",
+    status: "Present",
+    type: "Virtual Internship",
+    description:
+      "Currently working on AI-powered workflow automation using n8n, REST APIs and AI services to automate repetitive business operations. Designed and developed production-style automation workflows including AI Job Application Auto Tracker, AI-Powered Job Lead Tracker and Multi-Source Lead Intelligence Aggregator. Integrated Google Sheets, Gmail, Telegram, HTTP APIs, JavaScript transformations and AI-powered decision making to build scalable automation solutions that improve productivity and reduce manual effort.",
+    tech: [
+      "n8n",
+      "Workflow Automation",
+      "REST APIs",
+      "JavaScript",
+      "Google Sheets API",
+      "Gmail API",
+      "Telegram Bot API",
+      "HTTP Requests",
+      "JSON",
+      "AI Automation",
+      "API Integration",
+      "Low-Code Automation",
+    ],
+  },
+  {
     icon: BrainCircuit,
     position: "AI & Data Analytics Intern",
-    organization: "Industry Internship",
-    duration: "2024",
+    organization: "Edunet Foundation | AICTE | Shell India",
+    duration: "Aug 2025 – Sep 2025",
     status: "Completed",
+    type: "Virtual Internship",
     description:
-      "Worked on AI-based analytics, machine learning workflows and data-driven solutions.",
-    tech: ["Python", "Machine Learning", "Pandas", "Data Analytics"],
+      "Completed a four-week industry-oriented virtual internship focused on Python, Machine Learning and Data Analytics. Worked on the complete machine learning workflow including data preprocessing, exploratory data analysis (EDA), feature engineering, classification, regression, model evaluation and prediction using real-world datasets. Developed a Streamlit-based machine learning application and completed an end-to-end Machine Learning project.",
+    tech: [
+      "Python",
+      "Machine Learning",
+      "NumPy",
+      "Pandas",
+      "Matplotlib",
+      "Scikit-learn",
+      "EDA",
+      "Feature Engineering",
+      "Classification",
+      "Regression",
+      "Model Evaluation",
+      "Streamlit",
+    ],
   },
   {
-    icon: Workflow,
-    position: "Automation Engineering Intern",
-    organization: "Industry Internship",
-    duration: "2024",
-    status: "Completed",
+    icon: GraduationCap,
+    position: "Technical Workshops",
+    organization: "AWS Academy • Google Developer Groups (GDG) • Edunet Foundation • GLS University",
+    duration: "",
+    status: "None",
+    type: "Industry Workshops",
     description:
-      "Built workflow automation using APIs, AI models, webhooks and no-code automation platforms.",
-    tech: ["n8n", "APIs", "Webhooks", "AI Models"],
-  },
-  {
-    icon: Trophy,
-    position: "Hackathon Projects",
-    organization: "Multiple Events",
-    duration: "2023 — Present",
-    status: "Ongoing",
-    description: "Developed AI products under strict deadlines while leading technical teams.",
-    tech: ["AI", "Team Leadership", "Rapid Prototyping"],
+      "Actively participated in multiple industry-focused technical workshops, bootcamps and hands-on training programs covering Artificial Intelligence, Machine Learning, Cloud Computing, Python, Data Analytics and Modern Software Development.\n\nGained practical exposure through live coding sessions, real-world demonstrations, project-based learning and guidance from industry professionals.",
+    tech: [
+      "Python",
+      "Artificial Intelligence",
+      "Machine Learning",
+      "Data Analytics",
+      "Cloud Computing",
+      "AWS",
+      "Google Technologies",
+      "Streamlit",
+      "Git & GitHub",
+      "Modern Software Development",
+    ],
   },
 ];
 
@@ -59,21 +101,28 @@ const fadeUp = {
 };
 
 function StatusBadge({ status }: { status: Status }) {
-  const ongoing = status === "Ongoing";
+  if (status === "None") return null;
+
+  const isPresent = status === "Present";
+  const ongoing = status === "Ongoing" || isPresent;
+
+  let badgeColor = "border-brand/40 bg-brand/10 text-brand";
+  let dotColor = "bg-brand";
+
+  if (isPresent) {
+    badgeColor = "border-emerald-500/30 bg-emerald-500/10 text-emerald-500";
+    dotColor = "bg-emerald-500";
+  } else if (!ongoing) {
+    badgeColor = "border-border bg-secondary/60 text-muted-foreground";
+    dotColor = "bg-muted-foreground";
+  }
+
   return (
     <span
-      className={
-        ongoing
-          ? "inline-flex items-center gap-1.5 rounded-full border border-brand/40 bg-brand/10 px-3 py-1 text-xs font-medium text-brand"
-          : "inline-flex items-center gap-1.5 rounded-full border border-border bg-secondary/60 px-3 py-1 text-xs font-medium text-muted-foreground"
-      }
+      className={`inline-flex items-center gap-1.5 rounded-full border px-3 py-1 text-xs font-medium ${badgeColor}`}
     >
       <span
-        className={
-          ongoing
-            ? "h-1.5 w-1.5 rounded-full bg-brand animate-pulse"
-            : "h-1.5 w-1.5 rounded-full bg-muted-foreground"
-        }
+        className={`h-1.5 w-1.5 rounded-full ${dotColor} ${ongoing ? "animate-pulse" : ""}`}
       />
       {status}
     </span>
@@ -137,17 +186,39 @@ export function Experience() {
                     </span>
 
                     <div className="min-w-0 flex-1">
-                      <div className="flex flex-wrap items-center justify-between gap-2">
-                        <h3 className="font-display text-lg font-semibold">{item.position}</h3>
-                        <StatusBadge status={item.status} />
-                      </div>
-                      <p className="mt-1 text-sm text-muted-foreground">
-                        {item.organization} · {item.duration}
-                      </p>
+                      {item.type ? (
+                        <>
+                          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                            <div className="flex flex-wrap items-center gap-2">
+                              <h3 className="font-display text-lg font-semibold">{item.position}</h3>
+                              <StatusBadge status={item.status} />
+                            </div>
+                            <p className="text-sm font-medium text-muted-foreground shrink-0">
+                              {item.duration}
+                            </p>
+                          </div>
+                          <div className="mt-1 flex flex-col items-start gap-2">
+                            <p className="text-sm text-muted-foreground">{item.organization}</p>
+                            <span className="inline-flex items-center rounded-md border border-brand/20 bg-brand/5 px-2 py-0.5 text-[11px] font-medium text-brand/80 backdrop-blur-sm">
+                              {item.type}
+                            </span>
+                          </div>
+                        </>
+                      ) : (
+                        <>
+                          <div className="flex flex-wrap items-center justify-between gap-2">
+                            <h3 className="font-display text-lg font-semibold">{item.position}</h3>
+                            <StatusBadge status={item.status} />
+                          </div>
+                          <p className="mt-1 text-sm text-muted-foreground">
+                            {item.organization} · {item.duration}
+                          </p>
+                        </>
+                      )}
                     </div>
                   </div>
 
-                  <p className="mt-4 text-sm leading-relaxed text-muted-foreground">
+                  <p className="mt-4 text-sm leading-relaxed text-muted-foreground whitespace-pre-line">
                     {item.description}
                   </p>
 

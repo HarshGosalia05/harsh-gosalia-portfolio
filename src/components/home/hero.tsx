@@ -156,9 +156,10 @@ export function Hero() {
           >
             AI &amp; Automation-focused Computer Science Engineering (AI/ML) student at GLS
             University with hands-on experience in Machine Learning, Deep Learning, Large Language
-            Models (LLMs), Retrieval-Augmented Generation (RAG), Multi-Agent AI Systems, Computer
-            Vision, Workflow Automation (n8n), React, FastAPI and AWS. Passionate about building
-            intelligent, scalable and real-world AI solutions.
+            Models (LLMs), Multi-Agent AI Systems, Computer Vision, Workflow Automation (n8n),
+            Full-Stack Development using React, Node.js, Express.js, MongoDB, FastAPI and AWS.
+            Passionate about building intelligent, scalable and real-world AI-powered software
+            solutions with clean architecture and modern development practices.
           </motion.p>
 
           <motion.div variants={item} className="mt-10 flex flex-wrap gap-3">
