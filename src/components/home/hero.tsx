@@ -177,7 +177,7 @@ export function Hero() {
                 </a>
               </Button>
               <Button asChild variant="outline" className="h-10 w-10 shrink-0 px-0" title="Download Resume">
-                <a href={CONTACT.resume} download="Harsh_Gosalia_Resume.pdf">
+                <a href={CONTACT.resumeDownload} download="Harsh_Gosalia_Resume.pdf">
                   <Download />
                   <span className="sr-only">Download Resume</span>
                 </a>

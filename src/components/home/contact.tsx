@@ -72,7 +72,7 @@ const CARDS: ContactCard[] = [
   {
     icon: FileText,
     title: "Resume",
-    value: "Download PDF",
+    value: "View PDF",
     href: CONTACT.resume,
     external: true,
   },

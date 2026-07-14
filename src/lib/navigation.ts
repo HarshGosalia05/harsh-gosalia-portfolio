@@ -51,11 +51,13 @@ export const SOCIALS = {
 } as const;
 
 /** Single reusable resume link used everywhere across the site. */
-export const RESUME_URL = "/harsh-gosalia-resume.pdf";
+export const RESUME_URL = "https://drive.google.com/file/d/1tFjL9AS2u7MZsDojOXIizCffOQi8_dU7/view?usp=sharing";
+export const RESUME_DOWNLOAD_URL = "/harsh-gosalia-resume.pdf";
 
 export const CONTACT = {
   email: "harshgosalia05@gmail.com",
   phone: "+91 98765 43210",
   location: "Ahmedabad, Gujarat, India",
   resume: RESUME_URL,
+  resumeDownload: RESUME_DOWNLOAD_URL,
 } as const;
